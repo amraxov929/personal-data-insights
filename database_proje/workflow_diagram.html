@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px 20px;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 340px;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 16px 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-trigger  { background: #e8f4fd; }
+  .icon-openai   { background: #e8faf0; }
+  .icon-rss      { background: #fff3e0; }
+  .icon-agent    { background: #f3e8ff; }
+  .icon-output   { background: #e8f4fd; }
+  .icon-gmail    { background: #fde8e8; }
+
+  .card-text { display: flex; flex-direction: column; }
+  .step-num { font-size: 11px; color: #999; font-weight: 500; margin-bottom: 2px; }
+  .step-title { font-size: 13.5px; font-weight: 600; color: #1a1a1a; }
+  .step-sub { font-size: 11.5px; color: #666; margin-top: 1px; }
+
+  .card-actions { display: flex; gap: 8px; }
+  .card-actions span {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: #f5f5f5;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    color: #888;
+  }
+
+  .arrow {
+    width: 2px;
+    height: 32px;
+    background: #7c6ff7;
+    position: relative;
+    margin: 0 auto;
+  }
+  .arrow::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #7c6ff7;
+  }
+
+  /* parallel branch */
+  .branch-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+  }
+  .branch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .branch-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px 14px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .branch-card-text .step-title { font-size: 12.5px; }
+  .branch-card-text .step-sub { font-size: 11px; }
+
+  .branch-join {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 32px;
+  }
+  .branch-join::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 25%;
+    width: 50%;
+    height: 2px;
+    background: #7c6ff7;
+  }
+  .branch-join::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: #7c6ff7;
+  }
+  .branch-join .down-arrow {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid #7c6ff7;
+  }
+
+  .branch-split {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 32px;
+  }
+  .branch-split::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 25%;
+    width: 50%;
+    height: 2px;
+    background: #7c6ff7;
+  }
+  .branch-split-line-l {
+    position: absolute; bottom: 0; left: 25%;
+    width: 2px; height: 100%; background: #7c6ff7;
+  }
+  .branch-split-line-r {
+    position: absolute; bottom: 0; right: 25%;
+    width: 2px; height: 100%; background: #7c6ff7;
+  }
+  .branch-split-center {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 2px; height: 100%; background: #7c6ff7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 1. Workflow Trigger -->
+  <div class="card">
+    <div class="card-left">
+      <div class="icon icon-trigger">⚡</div>
+      <div class="card-text">
+        <span class="step-num">1. Manual Trigger</span>
+        <span class="step-title">Workflow Başlat</span>
+      </div>
+    </div>
+    <div class="card-actions"><span>⧉</span><span>✎</span></div>
+  </div>
+
+  <!-- split arrow -->
+  <div class="branch-split">
+    <div class="branch-split-center"></div>
+    <div class="branch-split-line-l"></div>
+    <div class="branch-split-line-r"></div>
+  </div>
+
+  <!-- 2a & 2b parallel RSS -->
+  <div class="branch-row">
+    <div class="branch-col">
+      <div class="branch-card">
+        <div class="icon icon-rss" style="width:32px;height:32px;font-size:16px;">📡</div>
+        <div class="branch-card-text card-text">
+          <span class="step-num">2a. RSS</span>
+          <span class="step-title">Tech Haberleri</span>
+          <span class="step-sub">The Verge</span>
+        </div>
+      </div>
+    </div>
+    <div class="branch-col">
+      <div class="branch-card">
+        <div class="icon icon-rss" style="width:32px;height:32px;font-size:16px;">📡</div>
+        <div class="branch-card-text card-text">
+          <span class="step-num">2b. RSS</span>
+          <span class="step-title">Dünya Haberleri</span>
+          <span class="step-sub">BBC World</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- join arrow -->
+  <div class="branch-join">
+    <div class="down-arrow"></div>
+  </div>
+
+  <!-- 3. OpenAI -->
+  <div class="card">
+    <div class="card-left">
+      <div class="icon icon-openai">🤖</div>
+      <div class="card-text">
+        <span class="step-num">3. OpenAI</span>
+        <span class="step-title">GPT-4.1-mini Model</span>
+      </div>
+    </div>
+    <div class="card-actions"><span>⧉</span><span>✎</span></div>
+  </div>
+
+  <div class="arrow"></div>
+
+  <!-- 4. AI Agent -->
+  <div class="card">
+    <div class="card-left">
+      <div class="icon icon-agent">🧠</div>
+      <div class="card-text">
+        <span class="step-num">4. AI Agent</span>
+        <span class="step-title">Haber Özeti Üret</span>
+        <span class="step-sub">LangChain Agent</span>
+      </div>
+    </div>
+    <div class="card-actions"><span>⧉</span><span>✎</span></div>
+  </div>
+
+  <div class="arrow"></div>
+
+  <!-- 5. Output -->
+  <div class="card">
+    <div class="card-left">
+      <div class="icon icon-output">📄</div>
+      <div class="card-text">
+        <span class="step-num">5. Set Node</span>
+        <span class="step-title">Özet Çıktısı</span>
+        <span class="step-sub">News Summary</span>
+      </div>
+    </div>
+    <div class="card-actions"><span>⧉</span><span>✎</span></div>
+  </div>
+
+  <div class="arrow"></div>
+
+  <!-- 6. Gmail -->
+  <div class="card">
+    <div class="card-left">
+      <div class="icon icon-gmail">✉️</div>
+      <div class="card-text">
+        <span class="step-num">6. Gmail</span>
+        <span class="step-title">E-posta ile Gönder</span>
+        <span class="step-sub">Daily Summary</span>
+      </div>
+    </div>
+    <div class="card-actions"><span>⧉</span><span>✎</span></div>
+  </div>
+
+</div>
+</body>
+</html>
